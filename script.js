@@ -1,156 +1,140 @@
-const uploadedFiles = JSON.parse(localStorage.getItem('uploadedFiles')) || [];
-let isLoggedIn = false;
-let currentUser = null;
-let fileToDelete = null; // Store the file to delete when right-clicked
+document.addEventListener("DOMContentLoaded", function () {
+    const loginSection = document.getElementById("loginSection");
+    const registerSection = document.getElementById("registerSection");
+    const uploadSection = document.getElementById("uploadSection");
+    const fileList = document.getElementById("fileList");
+    const registerButton = document.getElementById("registerButton");
+    const backButton = document.getElementById("backButton");
+    const loginForm = document.getElementById("loginForm");
+    const registerForm = document.getElementById("registerForm");
+    const uploadForm = document.getElementById("uploadForm");
+    const logoutButton = document.getElementById("logoutButton");
+    const showFilesButton = document.getElementById("showFilesButton");
+    const resumeDetails = document.getElementById("resumeDetails");
+    const viewResumeButton = document.getElementById("viewResumeButton");
+    const backToMenuButton = document.getElementById("backToMenuButton");
 
-// Load users from localStorage
-const users = JSON.parse(localStorage.getItem('users')) || [];
+    let uploadedFiles = JSON.parse(localStorage.getItem("uploadedFiles")) || []; // Load existing files from localStorage
 
-document.getElementById('loginForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    
-    const username = document.getElementById('loginUsername').value;
-    const password = document.getElementById('loginPassword').value;
-    const loginButton = document.querySelector('#loginForm button[type="submit"]');
+    // Load uploaded files on page load
+    updateFileList();
 
-    const user = users.find(user => user.username === username && user.password === password);
-    if (user) {
-        isLoggedIn = true;
-        currentUser = user;
-        document.getElementById('loginSection').style.display = 'none';
-        document.getElementById('uploadSection').style.display = 'block';
-        document.getElementById('loginMessage').textContent = "Login successful!";
-        document.getElementById('loginMessage').classList.remove('error-message');
-        document.getElementById('loginMessage').classList.add('success-message');
-        document.getElementById('logoutButton').style.display = 'block'; 
-        loginButton.classList.remove('error-button'); 
-        showUploadedFiles();
-    } else {
-        document.getElementById('loginMessage').textContent = "Invalid username or password.";
-        document.getElementById('loginMessage').classList.add('error-message'); 
-        loginButton.classList.add('error-button'); 
-    }
-});
-
-document.getElementById('registerButton').addEventListener('click', function() {
-    document.getElementById('loginSection').style.display = 'none';
-    document.getElementById('registerSection').style.display = 'block';
-});
-
-document.getElementById('backButton').addEventListener('click', function() {
-    document.getElementById('registerSection').style.display = 'none';
-    document.getElementById('loginSection').style.display = 'block';
-});
-
-document.getElementById('registerForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    
-    const username = document.getElementById('registerUsername').value;
-    const email = document.getElementById('registerEmail').value;
-    const password = document.getElementById('registerPassword').value;
-
-    if (users.find(user => user.username === username)) {
-        document.getElementById('registerMessage').textContent = "Username is already taken.";
-        document.getElementById('registerMessage').classList.add('error-message');
-        return;
-    }
-
-    users.push({ username, email, password });
-    localStorage.setItem('users', JSON.stringify(users));
-    document.getElementById('registerMessage').textContent = "Registration successful! You can now log in.";
-    document.getElementById('registerMessage').classList.remove('error-message');
-    document.getElementById('registerMessage').classList.add('success-message');
-    alert("Registration successful! Redirecting to login.");
-    
-    document.getElementById('registerForm').reset();
-    document.getElementById('registerSection').style.display = 'none';
-    document.getElementById('loginSection').style.display = 'block';
-});
-
-document.getElementById('uploadForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    
-    if (!isLoggedIn) {
-        alert("Please log in to upload files.");
-        return;
-    }
-
-    const fileInput = document.getElementById('fileInput');
-    
-    if (fileInput.files.length > 0) {
-        const file = fileInput.files[0];
-        const fileUrl = URL.createObjectURL(file);
-
-        uploadedFiles.push({ name: file.name, url: fileUrl });
-        localStorage.setItem('uploadedFiles', JSON.stringify(uploadedFiles));
-        
-        fileInput.value = '';
-        showUploadedFiles();
-    }
-});
-
-function showUploadedFiles() {
-    const fileList = document.getElementById('fileList');
-    const uploadedFilesDiv = document.getElementById('uploadedFiles');
-    
-    fileList.innerHTML = '';
-
-    uploadedFiles.forEach((file, index) => {
-        const listItem = document.createElement('li');
-        const link = document.createElement('a');
-        link.href = file.url;
-        link.textContent = file.name;
-        link.target = "_blank";
-
-        listItem.appendChild(link);
-        fileList.appendChild(listItem);
-
-        // Add right-click event for deletion
-        listItem.addEventListener('contextmenu', function(event) {
-            event.preventDefault();
-            fileToDelete = index; // Store the index of the file to delete
-            showDeleteMenu(event.pageX, event.pageY);
-        });
+    // Toggle between login and register forms
+    registerButton.addEventListener("click", function () {
+        loginSection.style.display = "none";
+        registerSection.style.display = "block";
     });
 
-    uploadedFilesDiv.style.display = 'block';
-}
+    backButton.addEventListener("click", function () {
+        registerSection.style.display = "none";
+        loginSection.style.display = "block";
+    });
 
-// Show context menu for deletion
-function showDeleteMenu(x, y) {
-    const deleteMenu = document.getElementById('deleteMenu');
-    deleteMenu.style.left = `${x}px`;
-    deleteMenu.style.top = `${y}px`;
-    deleteMenu.style.display = 'block';
-}
+    // Handle login form submission
+    loginForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const username = document.getElementById("loginUsername").value;
+        const password = document.getElementById("loginPassword").value;
 
-// Hide the delete menu when clicking outside
-document.addEventListener('click', function(event) {
-    const deleteMenu = document.getElementById('deleteMenu');
-    if (!deleteMenu.contains(event.target)) {
-        deleteMenu.style.display = 'none';
+        const storedUser = JSON.parse(localStorage.getItem("user"));
+
+        if (storedUser && storedUser.username === username && storedUser.password === password) {
+            loginSection.style.display = "none";
+            uploadSection.style.display = "block";
+            logoutButton.style.display = "block";
+        } else {
+            alert("Invalid username or password");
+        }
+    });
+
+    // Handle registration form submission
+    registerForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const username = document.getElementById("registerUsername").value;
+        const email = document.getElementById("registerEmail").value;
+        const password = document.getElementById("registerPassword").value;
+
+        const newUser = { username, email, password };
+        localStorage.setItem("user", JSON.stringify(newUser));
+
+        alert("Registration successful! You can now log in.");
+        registerForm.reset();
+        registerSection.style.display = "none";
+        loginSection.style.display = "block";
+    });
+
+    // Handle file upload
+    uploadForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const fileInput = document.getElementById("fileInput");
+        const file = fileInput.files[0];
+        if (file) {
+            const blobUrl = URL.createObjectURL(file); // Create a blob URL for the file
+            uploadedFiles.push({ name: file.name, url: blobUrl });
+            localStorage.setItem("uploadedFiles", JSON.stringify(uploadedFiles)); // Save to localStorage
+            updateFileList();
+            fileInput.value = ''; // Reset file input
+        }
+    });
+
+    // Show uploaded files
+    showFilesButton.addEventListener("click", function () {
+        document.getElementById("uploadedFiles").style.display = 'block';
+    });
+
+    // Function to update the displayed file list
+    function updateFileList() {
+        fileList.innerHTML = '';
+        uploadedFiles.forEach((file, index) => {
+            const li = document.createElement("li");
+            li.textContent = file.name;
+
+            // Create download link
+            const downloadLink = document.createElement("a");
+            downloadLink.href = file.url;
+            downloadLink.download = file.name; // Set the file name for download
+            downloadLink.textContent = "Download";
+            downloadLink.style.marginRight = '10px'; // Space between link and button
+
+            // Create delete button for each file
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "Delete";
+            deleteButton.style.marginLeft = '10px'; // Space between download link and delete button
+            deleteButton.addEventListener("click", function () {
+                deleteFile(index);
+            });
+
+            li.appendChild(downloadLink);
+            li.appendChild(deleteButton);
+            fileList.appendChild(li);
+        });
     }
-});
 
-// Delete file function
-document.getElementById('deleteFile').addEventListener('click', function() {
-    if (fileToDelete !== null) {
-        uploadedFiles.splice(fileToDelete, 1);
-        localStorage.setItem('uploadedFiles', JSON.stringify(uploadedFiles));
-        showUploadedFiles(); // Refresh the list
-        fileToDelete = null; // Reset after deletion
-        document.getElementById('deleteMenu').style.display = 'none';
+    // Function to delete a file
+    function deleteFile(index) {
+        // Revoke the Blob URL before removing it
+        URL.revokeObjectURL(uploadedFiles[index].url);
+        uploadedFiles.splice(index, 1); // Remove the file from the array
+        localStorage.setItem("uploadedFiles", JSON.stringify(uploadedFiles)); // Update localStorage
+        updateFileList(); // Update the displayed list
     }
+
+    // Logout functionality
+    logoutButton.addEventListener("click", function () {
+        loginSection.style.display = "block";
+        uploadSection.style.display = "none";
+        logoutButton.style.display = "none";
+    });
+
+    // View resume button functionality
+    viewResumeButton.addEventListener("click", function () {
+        resumeDetails.style.display = resumeDetails.style.display === "none" ? "block" : "none";
+    });
+
+    // Back to menu functionality from resume section
+    backToMenuButton.addEventListener("click", function () {
+        resumeDetails.style.display = "none";
+        uploadSection.style.display = "block"; // Show the upload section again
+    });
 });
 
-// Logout functionality
-document.getElementById('logoutButton').addEventListener('click', function() {
-    isLoggedIn = false;
-    currentUser = null;
-    document.getElementById('loginSection').style.display = 'block';
-    document.getElementById('uploadSection').style.display = 'none';
-    document.getElementById('registerSection').style.display = 'none'; 
-    document.getElementById('loginMessage').textContent = "Logged out successfully.";
-    document.getElementById('loginMessage').classList.remove('error-message'); 
-    document.getElementById('logoutButton').style.display = 'none'; 
-});

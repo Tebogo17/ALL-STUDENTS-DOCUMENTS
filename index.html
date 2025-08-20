@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Document Upload</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Student Document Upload</h1>
+
+        <section id="loginSection">
+            <h2>Mashabane Pythagorean</h2>
+            <form id="loginForm" aria-label="Login Form">
+                <input type="text" id="loginUsername" placeholder="Username" required>
+                <input type="password" id="loginPassword" placeholder="Password" required>
+                <div class="button-container">
+                    <button type="submit">Login</button>
+                    <button id="registerButton" type="button">Register</button>
+                </div>
+            </form>
+            <div id="loginMessage" aria-live="polite"></div>
+        </section>
+
+        <section id="registerSection" style="display: none;">
+            <h2>Register</h2>
+            <form id="registerForm" aria-label="Registration Form">
+                <input type="text" id="registerUsername" placeholder="Username" required>
+                <input type="email" id="registerEmail" placeholder="Email" required>
+                <input type="password" id="registerPassword" placeholder="Password" required>
+                <div class="button-container">
+                    <button type="submit">Create Account</button>
+                    <button id="backButton" type="button">Back to Login</button>
+                </div>
+            </form>
+            <div id="registerMessage" aria-live="polite"></div>
+        </section>
+
+        <section id="uploadSection" style="display: none;">
+            <form id="uploadForm" aria-label="File Upload Form">
+                <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.ppt,.pptx" required>
+                <div class="button-container">
+                    <button type="submit">Upload</button>
+                    <button id="showFilesButton" type="button">Show Uploaded Files</button>
+                    <button id="logoutButton" style="display: none;" type="button">Logout</button>
+                    <button id="viewResumeButton" type="button">View Resume</button>
+                </div>
+            </form>
+            <div id="uploadedFiles" style="display: none;">
+                <h2>Uploaded Files</h2>
+                <ul id="fileList"></ul>
+            </div>
+            <div id="resumeDetails" style="display: none;">
+                <div class="resume-container">
+                    <div class="resume-left">
+                        <a href='https://postimg.cc/FkfBM7J5' target='_blank' aria-label="View larger image of Mashabane Tebogo">
+                            <img src='https://i.postimg.cc/Y08BmFr9/Screenshot-20240327-010926-Gallery.jpg' alt='Mashabane Tebogo Resume Screenshot' />
+                        </a>
+                        <h2>Mashabane Tebogo</h2>
+                        <h3>Personal Details</h3>
+                        <p>Email: tebogonelson81@gmail.com</p>
+                        <p>Phone: 0609397230</p>
+                        <p>Address: 130 Hertz Blvd, Vanderbijlpark, C. W. 4 Vanderbijlpark, 1900 Gauteng</p>
+                        <p>Date of Birth: 17 August 2002</p>
+
+                        <h3>Skills</h3>
+                        <p>Technical: Java, Python, C#, SQL</p>
+                        <p>Soft: Problem Solving, Communication, Mathematical Analysis, Coding, Teamwork, .NET Framework, Time Management, Critical Thinking, Leadership, Data Visualization</p>
+
+                        <h3>Languages</h3>
+                        <p>Sepedi, English, Isizulu</p>
+
+                        <h3>Hobbies</h3>
+                        <p>Coding and Development, Hackathons and Coding Competitions, Gaming, Weight Lifting</p>
+                    </div>
+                    
+                    <div class="divider"></div>
+
+                    <div class="resume-right">
+                        <h3>Profile</h3>
+                        <p><a href="https://www.linkedin.com/in/tebogo-nelson-62a324275" target="_blank" rel="noopener noreferrer">LinkedIn Profile</a></p>
+                        <h3>Education</h3>
+                        <p>Jan 2023 - Dec 2025</p>
+                        <p>Bachelor of Science in Information Technology</p>
+                        <p>North West University, VanderbijlPark</p>
+                        <p>I am an undergraduate from North West University (NWU) Vaal campus with a degree of BSc in Information Technology. Enthusiastic student who is passionate about a position in the tech industry. As a 2nd-year student, I have learned several programming languages, but my strengths are in C#, JAVA & Python. One of my key strengths is problem-solving, coding, data analysis, and software development. I have a knack for developing efficient algorithms and creating user-friendly interfaces. My ability to collaborate with cross-functional teams and adapt to new technologies quickly has been instrumental in successfully delivering projects and achieving goals.</p>
+                        
+                        <h3>References</h3>
+                        <p>Jan Kruger<br>Lecturer (NWU), Vanderbijlpark<br>083 733 2485<br><a href="mailto:Jan.Kruger@nwu.ac.za">Jan.Kruger@nwu.ac.za</a></p>
+                        <p>Monyadiwe Ramatlotlo<br>Finance Department (NWU), Vanderbijlpark<br>078 496 6879<br><a href="mailto:Monyadiwe.Ramatlotlo@nwu.ac.za">Monyadiwe.Ramatlotlo@nwu.ac.za</a></p>
+
+                        <h3>Certificates</h3>
+                        <p>Jun 2023 Mathematics Representative: As the Discrete Mathematics Class Representative, I liaised between students and teachers to address academic concerns, organized study groups and tutoring sessions, coordinated mathematics events, and provided feedback on curriculum improvements. My role enhanced student engagement and performance in mathematics through effective communication, leadership, and support.</p>
+                        <p>Present Student Leader (House Committee): As the Social and Liaison Officer with Marketing for Faranani Student Residence, I coordinated events to foster community engagement, promoted residence activities through marketing initiatives, and facilitated communication between students and management. My efforts enhanced the residence's social environment and improved overall student satisfaction.</p>
+                    </div>
+                </div>
+                <button id="backToMenuButton" type="button">Back to Menu</button>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

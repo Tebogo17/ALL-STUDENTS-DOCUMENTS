@@ -1,0 +1,117 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container {
+    text-align: center;
+    background: #B22222; /* Changed to white for better contrast */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 90%; /* Makes it responsive on smaller screens */
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #333; /* Darker text color for better readability */
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+input {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    width: 100%; /* Full width for better responsiveness */
+    max-width: 300px; /* Max width to keep consistent with original */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border 0.3s ease;
+}
+
+input:focus {
+    border: 1px solid #007BFF;
+    outline: none;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF; /* Updated to a more vibrant button color */
+    color: white; /* Text color changed to white for better contrast */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #000000;
+}
+
+/* Animation for form sections */
+#loginSection, #registerSection, #uploadSection {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Resume Section Adjustments */
+.resume-container {
+    display: flex;
+    justify-content: space-between; /* Space out resume sections */
+    align-items: flex-start; /* Align items at the start */
+    margin-top: 20px; /* Adds space above the resume sections */
+}
+
+.resume-left, .resume-right {
+    width: 45%;
+    padding: 10px; /* Adds padding around content to avoid text touching the edges */
+}
+
+.resume-left img {
+    max-width: 100%; /* Ensure image is responsive */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 5px; /* Adds slight rounding to images */
+}
+
+.divider {
+    width: 2px;
+    background-color: #ccc; /* Changed to a softer color */
+    height: 300px;
+    display: inline-block;
+    margin: 0 20px;
+}
+
+/* Adjustments for buttons in the resume section */
+.button-container {
+    justify-content: space-between; /* Ensures buttons are spaced properly */
+}
+
+#backToMenuButton {
+    margin-top: 20px; /* Adds spacing above the button */
+}
+
